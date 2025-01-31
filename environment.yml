@@ -1,0 +1,6 @@
+name: pytorch-BraTS2020-unet-segmentation
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pytorch
