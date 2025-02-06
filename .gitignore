@@ -1,2 +1,3 @@
-data/
-processed_data/
+data/BraTS2020_ValidationData/
+data/MICCAI_BraTS2020_TrainingData/
+data/processed_data/

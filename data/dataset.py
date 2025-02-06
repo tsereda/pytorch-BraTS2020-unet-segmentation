@@ -134,7 +134,7 @@ def get_data_loaders(
 
 if __name__ == "__main__":
     # Example usage
-    DATA_PATH = "path/to/processed_data"
+    DATA_PATH = "processed_data"
     
     # Create datasets and dataloaders
     train_loader, val_loader = get_data_loaders(

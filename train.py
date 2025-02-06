@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 from model import UNet3D
-from dataset import get_data_loaders
+from data.dataset import get_data_loaders
 
 
 class DiceLoss(nn.Module):
@@ -169,6 +169,10 @@ def train_model(
         num_workers=num_workers
     )
     
+    # Debug: Check the number of samples in the loaders
+    print(f"Training samples: {len(train_loader.dataset)}")
+    print(f"Validation samples: {len(val_loader.dataset)}")
+    
     # Initialize model
     model = BrainTumorSegmentation(
         model_params={
@@ -221,8 +225,8 @@ def train_model(
 
 if __name__ == "__main__":
     # Training configuration
-    DATA_PATH = "path/to/processed_data"
-    OUTPUT_PATH = "path/to/output"
+    DATA_PATH = "/data/processed_data"
+    OUTPUT_PATH = "output"
     
     model, trainer = train_model(
         data_path=DATA_PATH,
