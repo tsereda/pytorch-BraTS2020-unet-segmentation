@@ -4,3 +4,8 @@ channels:
   - defaults
 dependencies:
   - pytorch
+  - nibabel
+  - numpy
+  - pytorch-lightning
+  - matplotlib
+  - pandas

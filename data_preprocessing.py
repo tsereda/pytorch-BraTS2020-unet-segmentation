@@ -124,8 +124,8 @@ class BraTS20DataPreprocessor:
 
 if __name__ == "__main__":
     # Example usage
-    TRAIN_DATASET_PATH = "path/to/BraTS2020_TrainingData"
-    OUTPUT_PATH = "path/to/processed_data"
+    TRAIN_DATASET_PATH = "data/MICCAI_BraTS2020_TrainingData"
+    OUTPUT_PATH = "processed_data"
     
     # Initialize and run preprocessing
     preprocessor = BraTS20DataPreprocessor(TRAIN_DATASET_PATH, OUTPUT_PATH)
