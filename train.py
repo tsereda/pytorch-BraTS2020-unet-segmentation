@@ -225,7 +225,8 @@ def train_model(
 
 if __name__ == "__main__":
     # Training configuration
-    DATA_PATH = "/data/processed_data"
+    DATA_PATH = "/home/usd.local/timothy.sereda/santosh_lab/shared/TimS/pytorch-BraTS2020-unet-segmentation/data/processed_data"  # Or wherever your data is
+    # Or, to make it more flexible, you could join paths:
     OUTPUT_PATH = "output"
     
     model, trainer = train_model(

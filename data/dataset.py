@@ -99,7 +99,10 @@ def get_data_loaders(
     
     # Create full dataset
     dataset = BraTS20Dataset(data_path, transform=transform)
-    
+
+    # print size
+    print(len(dataset))
+
     # Calculate split sizes
     train_size = int(train_val_split * len(dataset))
     val_size = len(dataset) - train_size
