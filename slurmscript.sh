@@ -30,11 +30,14 @@
 ### Commands to run your program start here ####################################
 
 source ~/.bashrc
+
+#conda env create -f environment.yml -y
 conda activate pytorch-BraTS2020-unet-segmentation
 
 
 # nvcc --version
 # pwd
-nvidia-smi
+# nvidia-smi
 # run the python script
+#python gpucheck.py
 python train.py

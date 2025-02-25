@@ -16,32 +16,35 @@ from data.dataset import get_data_loaders
 
 
 class DiceLoss(nn.Module):
-    """Dice loss for segmentation with class weights support"""
+    """Dice loss for 3D segmentation with class weights support"""
     def __init__(self, weights: Optional[torch.Tensor] = None, smooth: float = 1e-5):
         super().__init__()
         self.weights = weights
         self.smooth = smooth
         
     def forward(self, predictions: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
-        # Predictions should be softmaxed
+        # Predictions should be probabilities (after softmax)
+        # predictions shape: (batch_size, num_classes, D, H, W)
+        # targets shape: (batch_size, D, H, W)
         batch_size = predictions.size(0)
+        num_classes = predictions.size(1)
         
         # Flatten predictions and targets
-        predictions = predictions.view(batch_size, predictions.size(1), -1)
-        targets = F.one_hot(targets, num_classes=predictions.size(1))
-        targets = targets.view(batch_size, targets.size(-1), -1)
+        predictions = predictions.view(batch_size, num_classes, -1)
+        targets = targets.view(batch_size, -1)
+        
+        # One-hot encode targets
+        targets = F.one_hot(targets, num_classes=num_classes)
         targets = targets.permute(0, 2, 1)
         
-        # Calculate Dice score for each class
+        # Calculate Dice score
         intersection = torch.sum(predictions * targets, dim=2)
         union = torch.sum(predictions, dim=2) + torch.sum(targets, dim=2)
         dice_score = (2.0 * intersection + self.smooth) / (union + self.smooth)
         
-        # Apply class weights if provided
         if self.weights is not None:
             dice_score = dice_score * self.weights.to(dice_score.device)
             
-        # Return mean Dice loss
         return 1 - dice_score.mean()
 
 
@@ -72,25 +75,23 @@ class BrainTumorSegmentation(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
+        probs = F.softmax(y_hat, dim=1)  # Apply softmax
         
-        # Calculate losses
-        dice_loss = self.dice_loss(y_hat, y)
+        dice_loss = self.dice_loss(probs, y)
         ce_loss = self.ce_loss(y_hat, y)
         total_loss = dice_loss + ce_loss
         
-        # Log metrics
         self.log('train_dice_loss', dice_loss, on_step=True, on_epoch=True, prog_bar=True)
         self.log('train_ce_loss', ce_loss, on_step=True, on_epoch=True)
         self.log('train_total_loss', total_loss, on_step=True, on_epoch=True)
-        
         return total_loss
     
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
+        probs = F.softmax(y_hat, dim=1)  # Apply softmax
         
-        # Calculate losses
-        dice_loss = self.dice_loss(y_hat, y)
+        dice_loss = self.dice_loss(probs, y)
         ce_loss = self.ce_loss(y_hat, y)
         total_loss = dice_loss + ce_loss
         

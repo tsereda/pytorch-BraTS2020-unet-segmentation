@@ -3,10 +3,13 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - pytorch
-  - nibabel
   - numpy
-  - pytorch-lightning
+  - pip
+  - nibabel
   - matplotlib
   - pandas
   - tensorboard
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu126
+      - torch
+      - torchvision

@@ -1,3 +1,6 @@
 data/BraTS2020_ValidationData/
 data/MICCAI_BraTS2020_TrainingData/
 data/processed_data/
+output/checkpoints/
+output/logs/
+processed_data/
