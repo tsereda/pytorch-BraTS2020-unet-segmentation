@@ -28,6 +28,7 @@
 #SBATCH --nodelist=gpu001
 
 ### Commands to run your program start here ####################################
+echo "starting..."
 
 source ~/.bashrc
 
@@ -37,7 +38,6 @@ conda activate pytorch-BraTS2020-unet-segmentation
 
 # nvcc --version
 # pwd
-# nvidia-smi
-# run the python script
-#python gpucheck.py
+nvidia-smi
+python gpucheck.py
 python train.py
