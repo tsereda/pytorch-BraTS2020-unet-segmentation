@@ -6,66 +6,23 @@ import torch.nn.functional as F
 class ConvBlock3D(nn.Module):
     """
     Double convolution block for 3D UNet
-    Modified to match Keras implementation: no batch norm, added bias
+    Improved to match Keras implementation more closely
     """
     def __init__(self, in_channels: int, out_channels: int, dropout_p: float = 0.1):
         super().__init__()
-        self.conv = nn.Sequential(
-            nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1, bias=True),
-            nn.ReLU(inplace=True),
-            nn.Dropout3d(p=dropout_p),
-            nn.Conv3d(out_channels, out_channels, kernel_size=3, padding=1, bias=True),
-            nn.ReLU(inplace=True)
-        )
+        self.conv1 = nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1, bias=True)
+        self.relu1 = nn.ReLU(inplace=True)
+        self.dropout1 = nn.Dropout3d(p=dropout_p)
+        self.conv2 = nn.Conv3d(out_channels, out_channels, kernel_size=3, padding=1, bias=True)
+        self.relu2 = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        return self.conv(x)
-
-
-class DownBlock3D(nn.Module):
-    """
-    Downscaling block with maxpool, double conv
-    """
-    def __init__(self, in_channels: int, out_channels: int, dropout_p: float = 0.1):
-        super().__init__()
-        self.maxpool_conv = nn.Sequential(
-            nn.MaxPool3d(2),
-            ConvBlock3D(in_channels, out_channels, dropout_p)
-        )
-
-    def forward(self, x):
-        return self.maxpool_conv(x)
-
-
-class UpBlock3D(nn.Module):
-    """
-    Upscaling block with transposed conv, concatenation and double conv
-    Simplified dimension handling to match Keras approach
-    """
-    def __init__(self, in_channels: int, out_channels: int, dropout_p: float = 0.1):
-        super().__init__()
-        self.up = nn.ConvTranspose3d(in_channels, in_channels // 2, kernel_size=2, stride=2)
-        self.conv = ConvBlock3D(in_channels, out_channels, dropout_p)
-
-    def forward(self, x1, x2):
-        x1 = self.up(x1)
-        
-        # Simplified dimension handling (Keras doesn't specifically handle this)
-        # If dimensions don't match, we'll use center cropping or padding as needed
-        if x2.size()[2:] != x1.size()[2:]:
-            # Pad x1 if needed
-            diff_z = x2.size()[2] - x1.size()[2]
-            diff_y = x2.size()[3] - x1.size()[3]
-            diff_x = x2.size()[4] - x1.size()[4]
-            
-            x1 = F.pad(x1, [
-                max(0, diff_z // 2), max(0, diff_z - diff_z // 2),
-                max(0, diff_y // 2), max(0, diff_y - diff_y // 2),
-                max(0, diff_x // 2), max(0, diff_x - diff_x // 2)
-            ])
-        
-        x = torch.cat([x2, x1], dim=1)
-        return self.conv(x)
+        x = self.conv1(x)
+        x = self.relu1(x)
+        x = self.dropout1(x)
+        x = self.conv2(x)
+        x = self.relu2(x)
+        return x
 
 
 class UNet3D(nn.Module):
@@ -74,11 +31,7 @@ class UNet3D(nn.Module):
                  num_classes: int = 4, 
                  init_features: int = 16):
         """
-        3D U-Net model aligned with Keras implementation
-        Args:
-            in_channels (int): number of input channels (default: 3 for flair, t1ce, t2)
-            num_classes (int): number of output classes (default: 4 for brain tumor segmentation)
-            init_features (int): number of features in first layer (default: 16)
+        Improved 3D U-Net model to better match Keras implementation
         """
         super().__init__()
         
@@ -86,57 +39,77 @@ class UNet3D(nn.Module):
         self.in_channels = in_channels
         self.num_classes = num_classes
         
-        # Initialize feature numbers for each level
-        features = init_features
-        
         # Encoder path with Keras-matched dropout rates
-        self.enc1 = ConvBlock3D(in_channels, features, dropout_p=0.1)
-        self.enc2 = DownBlock3D(features, features * 2, dropout_p=0.1)
-        self.enc3 = DownBlock3D(features * 2, features * 4, dropout_p=0.2)
-        self.enc4 = DownBlock3D(features * 4, features * 8, dropout_p=0.2)
+        self.enc1 = ConvBlock3D(in_channels, init_features, dropout_p=0.1)
+        self.pool1 = nn.MaxPool3d(2)
+        
+        self.enc2 = ConvBlock3D(init_features, init_features * 2, dropout_p=0.1)
+        self.pool2 = nn.MaxPool3d(2)
+        
+        self.enc3 = ConvBlock3D(init_features * 2, init_features * 4, dropout_p=0.2)
+        self.pool3 = nn.MaxPool3d(2)
+        
+        self.enc4 = ConvBlock3D(init_features * 4, init_features * 8, dropout_p=0.2)
+        self.pool4 = nn.MaxPool3d(2)
         
         # Bridge
-        self.bridge = DownBlock3D(features * 8, features * 16, dropout_p=0.3)
+        self.bridge = ConvBlock3D(init_features * 8, init_features * 16, dropout_p=0.3)
         
         # Decoder path with Keras-matched dropout rates
-        self.up1 = UpBlock3D(features * 16, features * 8, dropout_p=0.2)
-        self.up2 = UpBlock3D(features * 8, features * 4, dropout_p=0.2)
-        self.up3 = UpBlock3D(features * 4, features * 2, dropout_p=0.1)
-        self.up4 = UpBlock3D(features * 2, features, dropout_p=0.1)
+        self.up1 = nn.ConvTranspose3d(init_features * 16, init_features * 8, kernel_size=2, stride=2)
+        self.dec1 = ConvBlock3D(init_features * 16, init_features * 8, dropout_p=0.2)  # 16 = 8 (from up) + 8 (from enc4)
+        
+        self.up2 = nn.ConvTranspose3d(init_features * 8, init_features * 4, kernel_size=2, stride=2)
+        self.dec2 = ConvBlock3D(init_features * 8, init_features * 4, dropout_p=0.2)   # 8 = 4 (from up) + 4 (from enc3)
+        
+        self.up3 = nn.ConvTranspose3d(init_features * 4, init_features * 2, kernel_size=2, stride=2)
+        self.dec3 = ConvBlock3D(init_features * 4, init_features * 2, dropout_p=0.1)   # 4 = 2 (from up) + 2 (from enc2)
+        
+        self.up4 = nn.ConvTranspose3d(init_features * 2, init_features, kernel_size=2, stride=2)
+        self.dec4 = ConvBlock3D(init_features * 2, init_features, dropout_p=0.1)       # 2 = 1 (from up) + 1 (from enc1)
         
         # Final convolution
-        self.final_conv = nn.Conv3d(features, num_classes, kernel_size=1)
+        self.final_conv = nn.Conv3d(init_features, num_classes, kernel_size=1)
 
     def forward(self, x):
         # Encoder
         enc1 = self.enc1(x)
-        enc2 = self.enc2(enc1)
-        enc3 = self.enc3(enc2)
-        enc4 = self.enc4(enc3)
+        enc2 = self.enc2(self.pool1(enc1))
+        enc3 = self.enc3(self.pool2(enc2))
+        enc4 = self.enc4(self.pool3(enc3))
         
         # Bridge
-        bridge = self.bridge(enc4)
+        bridge = self.bridge(self.pool4(enc4))
         
-        # Decoder
-        dec4 = self.up1(bridge, enc4)
-        dec3 = self.up2(dec4, enc3)
-        dec2 = self.up3(dec3, enc2)
-        dec1 = self.up4(dec2, enc1)
+        # Decoder with skip connections
+        # Up-conv, concatenate with skip connection, then convolution
+        up1 = self.up1(bridge)
+        dec1 = self.dec1(torch.cat([up1, enc4], dim=1))
         
-        # Final convolution and softmax
-        logits = self.final_conv(dec1)
-        return logits  # Note: softmax is applied in loss function, not here
+        up2 = self.up2(dec1)
+        dec2 = self.dec2(torch.cat([up2, enc3], dim=1))
+        
+        up3 = self.up3(dec2)
+        dec3 = self.dec3(torch.cat([up3, enc2], dim=1))
+        
+        up4 = self.up4(dec3)
+        dec4 = self.dec4(torch.cat([up4, enc1], dim=1))
+        
+        # Final convolution
+        logits = self.final_conv(dec4)
+        return logits
 
     def initialize_weights(self):
         """Initialize model weights using He uniform initialization (like Keras)"""
         for m in self.modules():
             if isinstance(m, nn.Conv3d) or isinstance(m, nn.ConvTranspose3d):
+                # Use kaiming_uniform_ for He uniform initialization (matching keras he_uniform)
                 nn.init.kaiming_uniform_(m.weight, nonlinearity='relu')
                 if m.bias is not None:
-                    nn.init.constant_(m.bias, 0)
+                    nn.init.zeros_(m.bias)
 
 
-# Example usage and testing
+# Print model summary if run directly
 if __name__ == "__main__":
     # Create a sample input tensor
     batch_size = 2
