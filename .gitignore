@@ -5,5 +5,4 @@ output/checkpoints/
 output/logs/
 processed_data/
 data/input_data_128/
-*.out
 __pycache__/

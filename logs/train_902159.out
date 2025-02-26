@@ -1,0 +1,735 @@
+starting...
+Wed Feb 26 01:07:14 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 545.23.08              Driver Version: 545.23.08    CUDA Version: 12.3     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:18:00.0 Off |                    0 |
+| N/A   49C    P0              36W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   1  Tesla P100-PCIE-16GB           Off | 00000000:AF:00.0 Off |                    0 |
+| N/A   31C    P0              29W / 250W |      0MiB / 16384MiB |      1%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+--- PyTorch GPU/CUDA Test Script ---
+
+CUDA is available! PyTorch is using GPU.
+Device name: Tesla P100-PCIE-16GB
+Device count: 2
+Current device: 0
+CUDA version: 12.6
+cuDNN version: 90501
+
+Using device: cuda
+
+--- Tensor Creation and Device Transfer ---
+CPU Tensor:
+tensor([[-0.4596,  1.0260, -0.8924,  0.8742, -0.1688],
+        [-0.7757, -0.2424,  0.0364,  0.4176, -0.2960],
+        [-0.8168, -1.1174, -0.3575,  0.9530, -1.3868],
+        [ 0.3490,  0.0750, -0.0124,  0.1928, -0.5940],
+        [-0.3081,  0.6323,  0.1600, -1.4590, -0.4783]])
+Tensor on CPU? False
+
+GPU Tensor:
+tensor([[-0.4596,  1.0260, -0.8924,  0.8742, -0.1688],
+        [-0.7757, -0.2424,  0.0364,  0.4176, -0.2960],
+        [-0.8168, -1.1174, -0.3575,  0.9530, -1.3868],
+        [ 0.3490,  0.0750, -0.0124,  0.1928, -0.5940],
+        [-0.3081,  0.6323,  0.1600, -1.4590, -0.4783]], device='cuda:0')
+Tensor on GPU? True
+
+--- Performance Comparison (GPU vs CPU) ---
+
+GPU Time (1 iterations of 10000x10000 matrix multiplication): 0.0245 seconds
+CPU Time (1 iterations of 10000x10000 matrix multiplication): 1.7409 seconds
+
+Speedup (CPU/GPU): 70.98x
+
+Performance improvement suggests GPU is being used effectively!
+
+--- Test Script Completed ---
+Using device: cuda
+GPU: Tesla P100-PCIE-16GB
+CUDA Version: 12.6
+Memory allocated: 0.00 GB
+Memory cached: 0.00 GB
+Calculating class weights...
+Class counts: tensor([99865056.,  1097287.,  2854903.,  1040365.])
+Class weights: tensor([ 0.2625, 20.0000,  9.1822, 20.0000])
+Epoch 1/100:
+  Train Loss: 0.5085
+  Val Loss: 0.2386
+  Mean IoU: 0.2703
+  Class IoUs: [0.83127725 0.13236675 0.09686693 0.02070946]
+  Learning Rate: 0.000488
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 2/100:
+  Train Loss: 0.2426
+  Val Loss: 0.1719
+  Mean IoU: 0.3333
+  Class IoUs: [0.90447766 0.10392963 0.27355412 0.05113618]
+  Learning Rate: 0.000453
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 3/100:
+  Train Loss: 0.2079
+  Val Loss: 0.1576
+  Mean IoU: 0.3333
+  Class IoUs: [0.892444   0.15752465 0.24229442 0.04103594]
+  Learning Rate: 0.000398
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 4/100:
+  Train Loss: 0.1707
+  Val Loss: 0.1474
+  Mean IoU: 0.3725
+  Class IoUs: [0.9299849  0.18258916 0.2543742  0.12285832]
+  Learning Rate: 0.000329
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 5/100:
+  Train Loss: 0.1485
+  Val Loss: 0.0963
+  Mean IoU: 0.3863
+  Class IoUs: [0.95221514 0.15467891 0.30949476 0.12881796]
+  Learning Rate: 0.000253
+Checkpoint saved to output/improved_model/best_model.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 6/100:
+  Train Loss: 0.1221
+  Val Loss: 0.0942
+  Mean IoU: 0.3936
+  Class IoUs: [0.92867064 0.14972949 0.328028   0.16796242]
+  Learning Rate: 0.000176
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 7/100:
+  Train Loss: 0.1066
+  Val Loss: 0.0896
+  Mean IoU: 0.4075
+  Class IoUs: [0.9485665  0.12758829 0.3392608  0.21446887]
+  Learning Rate: 0.000107
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 8/100:
+  Train Loss: 0.1077
+  Val Loss: 0.0842
+  Mean IoU: 0.4090
+  Class IoUs: [0.9404412  0.1561202  0.33956057 0.19987293]
+  Learning Rate: 0.000052
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 9/100:
+  Train Loss: 0.0987
+  Val Loss: 0.0965
+  Mean IoU: 0.3938
+  Class IoUs: [0.9136769  0.13352361 0.3344902  0.19366941]
+  Learning Rate: 0.000017
+Epoch 10/100:
+  Train Loss: 0.0787
+  Val Loss: 0.0834
+  Mean IoU: 0.4094
+  Class IoUs: [0.9305812  0.17515698 0.32540578 0.20642066]
+  Learning Rate: 0.000500
+Checkpoint saved to output/improved_model/best_model.pth
+Checkpoint saved to output/improved_model/model_epoch_10.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 11/100:
+  Train Loss: 0.1414
+  Val Loss: 0.1829
+  Mean IoU: 0.2927
+  Class IoUs: [0.82429415 0.01512637 0.23340027 0.09802078]
+  Learning Rate: 0.000497
+Epoch 12/100:
+  Train Loss: 0.1238
+  Val Loss: 0.1098
+  Mean IoU: 0.3860
+  Class IoUs: [0.9126145  0.09871154 0.32285538 0.20964824]
+  Learning Rate: 0.000488
+Epoch 13/100:
+  Train Loss: 0.1184
+  Val Loss: 0.1015
+  Mean IoU: 0.4011
+  Class IoUs: [0.9612572  0.21324827 0.23277192 0.19716586]
+  Learning Rate: 0.000473
+Epoch 14/100:
+  Train Loss: 0.1112
+  Val Loss: 0.0819
+  Mean IoU: 0.3992
+  Class IoUs: [0.9646003  0.20844717 0.28529146 0.13848795]
+  Learning Rate: 0.000453
+Epoch 15/100:
+  Train Loss: 0.0985
+  Val Loss: 0.0784
+  Mean IoU: 0.4219
+  Class IoUs: [0.95368636 0.1439908  0.35499838 0.23484367]
+  Learning Rate: 0.000428
+Checkpoint saved to output/improved_model/best_model.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 16/100:
+  Train Loss: 0.0793
+  Val Loss: 0.0800
+  Mean IoU: 0.4156
+  Class IoUs: [0.93364656 0.20596926 0.31250367 0.21014664]
+  Learning Rate: 0.000398
+Epoch 17/100:
+  Train Loss: 0.0732
+  Val Loss: 0.0933
+  Mean IoU: 0.4163
+  Class IoUs: [0.9155275  0.18886872 0.3253224  0.23562914]
+  Learning Rate: 0.000365
+Epoch 18/100:
+  Train Loss: 0.0680
+  Val Loss: 0.0708
+  Mean IoU: 0.4452
+  Class IoUs: [0.96835417 0.22440808 0.30487207 0.28333077]
+  Learning Rate: 0.000329
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 19/100:
+  Train Loss: 0.0794
+  Val Loss: 0.0634
+  Mean IoU: 0.4342
+  Class IoUs: [0.94706035 0.08373707 0.35856974 0.3472436 ]
+  Learning Rate: 0.000291
+Epoch 20/100:
+  Train Loss: 0.0816
+  Val Loss: 0.0488
+  Mean IoU: 0.4460
+  Class IoUs: [0.95184565 0.10573392 0.376019   0.3504316 ]
+  Learning Rate: 0.000253
+Checkpoint saved to output/improved_model/best_model.pth
+Checkpoint saved to output/improved_model/model_epoch_20.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 21/100:
+  Train Loss: 0.0695
+  Val Loss: 0.0612
+  Mean IoU: 0.4698
+  Class IoUs: [0.9539669  0.22889347 0.33950958 0.35691956]
+  Learning Rate: 0.000214
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 22/100:
+  Train Loss: 0.0557
+  Val Loss: 0.0505
+  Mean IoU: 0.4635
+  Class IoUs: [0.9466981  0.20674734 0.3738327  0.32674828]
+  Learning Rate: 0.000176
+Epoch 23/100:
+  Train Loss: 0.0525
+  Val Loss: 0.0454
+  Mean IoU: 0.4781
+  Class IoUs: [0.9572323  0.20825768 0.3716267  0.37533623]
+  Learning Rate: 0.000140
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 24/100:
+  Train Loss: 0.0535
+  Val Loss: 0.0590
+  Mean IoU: 0.4492
+  Class IoUs: [0.9355799  0.15022214 0.367777   0.34319735]
+  Learning Rate: 0.000107
+Epoch 25/100:
+  Train Loss: 0.0466
+  Val Loss: 0.0444
+  Mean IoU: 0.4727
+  Class IoUs: [0.95246726 0.21770826 0.3720232  0.3485289 ]
+  Learning Rate: 0.000077
+Training history plot saved to output/improved_model/training_history.png
+Epoch 26/100:
+  Train Loss: 0.0449
+  Val Loss: 0.0439
+  Mean IoU: 0.4842
+  Class IoUs: [0.96488404 0.21818447 0.38393727 0.36969864]
+  Learning Rate: 0.000052
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 27/100:
+  Train Loss: 0.0488
+  Val Loss: 0.0412
+  Mean IoU: 0.4758
+  Class IoUs: [0.9630062  0.18741652 0.39789638 0.35503253]
+  Learning Rate: 0.000032
+Epoch 28/100:
+  Train Loss: 0.0450
+  Val Loss: 0.0432
+  Mean IoU: 0.4808
+  Class IoUs: [0.9562429  0.21552622 0.37417713 0.37710932]
+  Learning Rate: 0.000017
+Epoch 29/100:
+  Train Loss: 0.0463
+  Val Loss: 0.0416
+  Mean IoU: 0.4846
+  Class IoUs: [0.96109515 0.21455164 0.3812709  0.38146055]
+  Learning Rate: 0.000008
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 30/100:
+  Train Loss: 0.0454
+  Val Loss: 0.0408
+  Mean IoU: 0.4857
+  Class IoUs: [0.9644832  0.21477146 0.38731727 0.37604222]
+  Learning Rate: 0.000500
+Checkpoint saved to output/improved_model/best_model.pth
+Checkpoint saved to output/improved_model/model_epoch_30.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 31/100:
+  Train Loss: 0.0860
+  Val Loss: 0.0751
+  Mean IoU: 0.4419
+  Class IoUs: [0.97477    0.21780781 0.29975972 0.2751582 ]
+  Learning Rate: 0.000499
+Epoch 32/100:
+  Train Loss: 0.0838
+  Val Loss: 0.0837
+  Mean IoU: 0.4340
+  Class IoUs: [0.914628   0.17037965 0.32275352 0.32823932]
+  Learning Rate: 0.000497
+Epoch 33/100:
+  Train Loss: 0.0675
+  Val Loss: 0.0683
+  Mean IoU: 0.4430
+  Class IoUs: [0.9212806  0.22057784 0.29934242 0.33073896]
+  Learning Rate: 0.000493
+Epoch 34/100:
+  Train Loss: 0.0852
+  Val Loss: 0.0630
+  Mean IoU: 0.4642
+  Class IoUs: [0.9642592  0.13236758 0.38246292 0.37756118]
+  Learning Rate: 0.000488
+Epoch 35/100:
+  Train Loss: 0.0790
+  Val Loss: 0.1126
+  Mean IoU: 0.3587
+  Class IoUs: [0.84601516 0.11649881 0.2677738  0.20463152]
+  Learning Rate: 0.000481
+Training history plot saved to output/improved_model/training_history.png
+Epoch 36/100:
+  Train Loss: 0.0789
+  Val Loss: 0.0655
+  Mean IoU: 0.4575
+  Class IoUs: [0.94508237 0.19009958 0.36673957 0.32788122]
+  Learning Rate: 0.000473
+Epoch 37/100:
+  Train Loss: 0.0608
+  Val Loss: 0.0935
+  Mean IoU: 0.4309
+  Class IoUs: [0.8984218  0.18306634 0.32030386 0.32174608]
+  Learning Rate: 0.000464
+Epoch 38/100:
+  Train Loss: 0.0670
+  Val Loss: 0.0729
+  Mean IoU: 0.4507
+  Class IoUs: [0.91251343 0.22255535 0.3160574  0.35168618]
+  Learning Rate: 0.000453
+Epoch 39/100:
+  Train Loss: 0.0600
+  Val Loss: 0.0589
+  Mean IoU: 0.4751
+  Class IoUs: [0.97176653 0.14823227 0.37943304 0.40091634]
+  Learning Rate: 0.000441
+Epoch 40/100:
+  Train Loss: 0.0615
+  Val Loss: 0.0621
+  Mean IoU: 0.4690
+  Class IoUs: [0.9327806  0.21352258 0.35412928 0.37574857]
+  Learning Rate: 0.000428
+Checkpoint saved to output/improved_model/model_epoch_40.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 41/100:
+  Train Loss: 0.0438
+  Val Loss: 0.0471
+  Mean IoU: 0.4967
+  Class IoUs: [0.9715905  0.2124404  0.391137   0.41158965]
+  Learning Rate: 0.000413
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 42/100:
+  Train Loss: 0.0533
+  Val Loss: 0.0562
+  Mean IoU: 0.4667
+  Class IoUs: [0.93444806 0.2202395  0.3370308  0.37526986]
+  Learning Rate: 0.000398
+Epoch 43/100:
+  Train Loss: 0.0438
+  Val Loss: 0.0504
+  Mean IoU: 0.4807
+  Class IoUs: [0.9742871  0.2461254  0.3511439  0.35123768]
+  Learning Rate: 0.000382
+Epoch 44/100:
+  Train Loss: 0.0470
+  Val Loss: 0.0553
+  Mean IoU: 0.4931
+  Class IoUs: [0.9763834  0.21845981 0.3854693  0.3921595 ]
+  Learning Rate: 0.000365
+Epoch 45/100:
+  Train Loss: 0.0425
+  Val Loss: 0.0575
+  Mean IoU: 0.4692
+  Class IoUs: [0.9337318  0.19991617 0.36988783 0.37342888]
+  Learning Rate: 0.000347
+Training history plot saved to output/improved_model/training_history.png
+Epoch 46/100:
+  Train Loss: 0.0481
+  Val Loss: 0.0401
+  Mean IoU: 0.5070
+  Class IoUs: [0.96773803 0.24206081 0.39398676 0.42429125]
+  Learning Rate: 0.000329
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 47/100:
+  Train Loss: 0.0377
+  Val Loss: 0.0539
+  Mean IoU: 0.4938
+  Class IoUs: [0.97323215 0.24603516 0.35235283 0.40345195]
+  Learning Rate: 0.000310
+Epoch 48/100:
+  Train Loss: 0.0415
+  Val Loss: 0.0404
+  Mean IoU: 0.5080
+  Class IoUs: [0.96961373 0.22695364 0.41453823 0.42098737]
+  Learning Rate: 0.000291
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 49/100:
+  Train Loss: 0.0370
+  Val Loss: 0.0499
+  Mean IoU: 0.4955
+  Class IoUs: [0.97287315 0.2270492  0.41117588 0.37092435]
+  Learning Rate: 0.000272
+Epoch 50/100:
+  Train Loss: 0.0362
+  Val Loss: 0.0440
+  Mean IoU: 0.5073
+  Class IoUs: [0.96080124 0.23896945 0.40263468 0.4268393 ]
+  Learning Rate: 0.000253
+Checkpoint saved to output/improved_model/model_epoch_50.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 51/100:
+  Train Loss: 0.0368
+  Val Loss: 0.0423
+  Mean IoU: 0.5061
+  Class IoUs: [0.9589711  0.21952806 0.40237755 0.44358733]
+  Learning Rate: 0.000233
+Epoch 52/100:
+  Train Loss: 0.0386
+  Val Loss: 0.0405
+  Mean IoU: 0.5115
+  Class IoUs: [0.95877165 0.23338963 0.4153169  0.4385228 ]
+  Learning Rate: 0.000214
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 53/100:
+  Train Loss: 0.0317
+  Val Loss: 0.0406
+  Mean IoU: 0.5120
+  Class IoUs: [0.9689041  0.23102146 0.41426966 0.4336598 ]
+  Learning Rate: 0.000195
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 54/100:
+  Train Loss: 0.0291
+  Val Loss: 0.0436
+  Mean IoU: 0.5206
+  Class IoUs: [0.9711762  0.20699798 0.43438667 0.46987686]
+  Learning Rate: 0.000176
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 55/100:
+  Train Loss: 0.0321
+  Val Loss: 0.0392
+  Mean IoU: 0.5281
+  Class IoUs: [0.97596216 0.24175063 0.43381417 0.4610069 ]
+  Learning Rate: 0.000158
+Checkpoint saved to output/improved_model/best_model.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 56/100:
+  Train Loss: 0.0321
+  Val Loss: 0.0426
+  Mean IoU: 0.5189
+  Class IoUs: [0.9690573  0.212015   0.432243   0.46218455]
+  Learning Rate: 0.000140
+Epoch 57/100:
+  Train Loss: 0.0289
+  Val Loss: 0.0356
+  Mean IoU: 0.5118
+  Class IoUs: [0.9564345  0.24321416 0.39771235 0.4497755 ]
+  Learning Rate: 0.000123
+Epoch 58/100:
+  Train Loss: 0.0306
+  Val Loss: 0.0330
+  Mean IoU: 0.5156
+  Class IoUs: [0.9651299  0.20379557 0.43256024 0.46100283]
+  Learning Rate: 0.000107
+Epoch 59/100:
+  Train Loss: 0.0279
+  Val Loss: 0.0348
+  Mean IoU: 0.5365
+  Class IoUs: [0.9764321 0.2582914 0.4344587 0.4768105]
+  Learning Rate: 0.000092
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 60/100:
+  Train Loss: 0.0260
+  Val Loss: 0.0416
+  Mean IoU: 0.5232
+  Class IoUs: [0.9689642  0.234425   0.43327868 0.4560583 ]
+  Learning Rate: 0.000077
+Checkpoint saved to output/improved_model/model_epoch_60.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 61/100:
+  Train Loss: 0.0267
+  Val Loss: 0.0296
+  Mean IoU: 0.5316
+  Class IoUs: [0.97339106 0.25903237 0.42375258 0.47017083]
+  Learning Rate: 0.000064
+Epoch 62/100:
+  Train Loss: 0.0264
+  Val Loss: 0.0306
+  Mean IoU: 0.5305
+  Class IoUs: [0.96865714 0.24729809 0.43553978 0.47070068]
+  Learning Rate: 0.000052
+Epoch 63/100:
+  Train Loss: 0.0252
+  Val Loss: 0.0299
+  Mean IoU: 0.5304
+  Class IoUs: [0.9685224  0.2620642  0.4206356  0.47044075]
+  Learning Rate: 0.000041
+Epoch 64/100:
+  Train Loss: 0.0255
+  Val Loss: 0.0342
+  Mean IoU: 0.5399
+  Class IoUs: [0.9750517  0.24833666 0.45214352 0.48415282]
+  Learning Rate: 0.000032
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 65/100:
+  Train Loss: 0.0255
+  Val Loss: 0.0305
+  Mean IoU: 0.5424
+  Class IoUs: [0.9748316  0.2554928  0.44968706 0.48967835]
+  Learning Rate: 0.000024
+Checkpoint saved to output/improved_model/best_model.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 66/100:
+  Train Loss: 0.0269
+  Val Loss: 0.0291
+  Mean IoU: 0.5406
+  Class IoUs: [0.97414976 0.2499284  0.45183048 0.48651898]
+  Learning Rate: 0.000017
+Epoch 67/100:
+  Train Loss: 0.0244
+  Val Loss: 0.0293
+  Mean IoU: 0.5400
+  Class IoUs: [0.97273314 0.24773265 0.45396414 0.48568678]
+  Learning Rate: 0.000012
+Epoch 68/100:
+  Train Loss: 0.0266
+  Val Loss: 0.0318
+  Mean IoU: 0.5388
+  Class IoUs: [0.9712337  0.2544602  0.44607025 0.48330492]
+  Learning Rate: 0.000008
+Epoch 69/100:
+  Train Loss: 0.0272
+  Val Loss: 0.0318
+  Mean IoU: 0.5390
+  Class IoUs: [0.9717356  0.25631282 0.44580585 0.48200473]
+  Learning Rate: 0.000006
+Epoch 70/100:
+  Train Loss: 0.0284
+  Val Loss: 0.0312
+  Mean IoU: 0.5404
+  Class IoUs: [0.97255963 0.25579205 0.44963208 0.48377535]
+  Learning Rate: 0.000500
+Checkpoint saved to output/improved_model/model_epoch_70.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 71/100:
+  Train Loss: 0.0479
+  Val Loss: 0.0526
+  Mean IoU: 0.5144
+  Class IoUs: [0.96584845 0.23287664 0.4108617  0.4479699 ]
+  Learning Rate: 0.000500
+Epoch 72/100:
+  Train Loss: 0.0418
+  Val Loss: 0.0483
+  Mean IoU: 0.5186
+  Class IoUs: [0.9680612  0.24644825 0.4186863  0.44115102]
+  Learning Rate: 0.000499
+Epoch 73/100:
+  Train Loss: 0.0426
+  Val Loss: 0.0433
+  Mean IoU: 0.5038
+  Class IoUs: [0.97441393 0.12941207 0.4377334  0.47374356]
+  Learning Rate: 0.000498
+Epoch 74/100:
+  Train Loss: 0.0508
+  Val Loss: 0.0542
+  Mean IoU: 0.4933
+  Class IoUs: [0.9807579  0.17140912 0.43221292 0.3887578 ]
+  Learning Rate: 0.000497
+Epoch 75/100:
+  Train Loss: 0.0393
+  Val Loss: 0.0590
+  Mean IoU: 0.5145
+  Class IoUs: [0.9590988  0.23915033 0.4087332  0.45083812]
+  Learning Rate: 0.000495
+Training history plot saved to output/improved_model/training_history.png
+Epoch 76/100:
+  Train Loss: 0.0437
+  Val Loss: 0.0503
+  Mean IoU: 0.5046
+  Class IoUs: [0.9588774  0.24353613 0.37696883 0.43889788]
+  Learning Rate: 0.000493
+Epoch 77/100:
+  Train Loss: 0.0464
+  Val Loss: 0.0639
+  Mean IoU: 0.4806
+  Class IoUs: [0.93925405 0.2513897  0.3279528  0.40378344]
+  Learning Rate: 0.000491
+Epoch 78/100:
+  Train Loss: 0.0379
+  Val Loss: 0.0488
+  Mean IoU: 0.5205
+  Class IoUs: [0.967544  0.252234  0.4198643 0.4424177]
+  Learning Rate: 0.000488
+Epoch 79/100:
+  Train Loss: 0.0332
+  Val Loss: 0.0493
+  Mean IoU: 0.5295
+  Class IoUs: [0.9775672  0.26151767 0.4024212  0.47665098]
+  Learning Rate: 0.000485
+Epoch 80/100:
+  Train Loss: 0.0390
+  Val Loss: 0.0393
+  Mean IoU: 0.5341
+  Class IoUs: [0.9768052  0.23864536 0.45094    0.47013557]
+  Learning Rate: 0.000481
+Checkpoint saved to output/improved_model/model_epoch_80.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 81/100:
+  Train Loss: 0.0372
+  Val Loss: 0.0621
+  Mean IoU: 0.4783
+  Class IoUs: [0.9571295  0.11216838 0.40443504 0.4394068 ]
+  Learning Rate: 0.000477
+Epoch 82/100:
+  Train Loss: 0.0366
+  Val Loss: 0.0363
+  Mean IoU: 0.5033
+  Class IoUs: [0.9688917  0.13861056 0.44248697 0.4631622 ]
+  Learning Rate: 0.000473
+Epoch 83/100:
+  Train Loss: 0.0336
+  Val Loss: 0.0421
+  Mean IoU: 0.4936
+  Class IoUs: [0.9765915  0.04245264 0.44792646 0.5074567 ]
+  Learning Rate: 0.000468
+Epoch 84/100:
+  Train Loss: 0.0267
+  Val Loss: 0.0350
+  Mean IoU: 0.5420
+  Class IoUs: [0.9712063  0.25981897 0.44945055 0.48763904]
+  Learning Rate: 0.000464
+Epoch 85/100:
+  Train Loss: 0.0271
+  Val Loss: 0.0458
+  Mean IoU: 0.5236
+  Class IoUs: [0.96281904 0.1975648  0.4456215  0.48830694]
+  Learning Rate: 0.000458
+Training history plot saved to output/improved_model/training_history.png
+Epoch 86/100:
+  Train Loss: 0.0341
+  Val Loss: 0.0381
+  Mean IoU: 0.5456
+  Class IoUs: [0.9765475  0.28264904 0.42917237 0.4940367 ]
+  Learning Rate: 0.000453
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 87/100:
+  Train Loss: 0.0305
+  Val Loss: 0.0416
+  Mean IoU: 0.5369
+  Class IoUs: [0.98268497 0.27431577 0.4352596  0.45548424]
+  Learning Rate: 0.000447
+Epoch 88/100:
+  Train Loss: 0.0309
+  Val Loss: 0.0408
+  Mean IoU: 0.5320
+  Class IoUs: [0.9794602  0.27179375 0.4237273  0.45282316]
+  Learning Rate: 0.000441
+Epoch 89/100:
+  Train Loss: 0.0291
+  Val Loss: 0.0283
+  Mean IoU: 0.5618
+  Class IoUs: [0.97274274 0.30761668 0.45349768 0.51329565]
+  Learning Rate: 0.000434
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 90/100:
+  Train Loss: 0.0283
+  Val Loss: 0.0381
+  Mean IoU: 0.5135
+  Class IoUs: [0.96209514 0.2171174  0.44624913 0.4285143 ]
+  Learning Rate: 0.000428
+Checkpoint saved to output/improved_model/model_epoch_90.pth
+Training history plot saved to output/improved_model/training_history.png
+Epoch 91/100:
+  Train Loss: 0.0258
+  Val Loss: 0.0329
+  Mean IoU: 0.5410
+  Class IoUs: [0.961283   0.2961192  0.42422214 0.48245615]
+  Learning Rate: 0.000421
+Epoch 92/100:
+  Train Loss: 0.0258
+  Val Loss: 0.0375
+  Mean IoU: 0.5410
+  Class IoUs: [0.95582277 0.2670867  0.44040662 0.50086707]
+  Learning Rate: 0.000413
+Epoch 93/100:
+  Train Loss: 0.0254
+  Val Loss: 0.0363
+  Mean IoU: 0.5557
+  Class IoUs: [0.97240394 0.30840373 0.4503964  0.49140006]
+  Learning Rate: 0.000406
+Epoch 94/100:
+  Train Loss: 0.0257
+  Val Loss: 0.0303
+  Mean IoU: 0.5212
+  Class IoUs: [0.96071666 0.29484266 0.3976306  0.43153298]
+  Learning Rate: 0.000398
+Epoch 95/100:
+  Train Loss: 0.0248
+  Val Loss: 0.0364
+  Mean IoU: 0.5218
+  Class IoUs: [0.952195   0.3115627  0.36960378 0.45396605]
+  Learning Rate: 0.000390
+Training history plot saved to output/improved_model/training_history.png
+Epoch 96/100:
+  Train Loss: 0.0223
+  Val Loss: 0.0342
+  Mean IoU: 0.5438
+  Class IoUs: [0.9458809  0.31177837 0.4337993  0.4835606 ]
+  Learning Rate: 0.000382
+Epoch 97/100:
+  Train Loss: 0.0274
+  Val Loss: 0.0275
+  Mean IoU: 0.5690
+  Class IoUs: [0.98151255 0.30231765 0.47918904 0.51294976]
+  Learning Rate: 0.000373
+Checkpoint saved to output/improved_model/best_model.pth
+Epoch 98/100:
+  Train Loss: 0.0264
+  Val Loss: 0.0238
+  Mean IoU: 0.5659
+  Class IoUs: [0.96889883 0.32384178 0.46401626 0.50692534]
+  Learning Rate: 0.000365
+Epoch 99/100:
+  Train Loss: 0.0221
+  Val Loss: 0.0345
+  Mean IoU: 0.5313
+  Class IoUs: [0.9572841  0.31823936 0.43757632 0.41214934]
+  Learning Rate: 0.000356
+Epoch 100/100:
+  Train Loss: 0.0272
+  Val Loss: 0.0295
+  Mean IoU: 0.5769
+  Class IoUs: [0.9803351  0.35813907 0.4402199  0.5288619 ]
+  Learning Rate: 0.000347
+Checkpoint saved to output/improved_model/best_model.pth
+Checkpoint saved to output/improved_model/model_epoch_100.pth
+Training history plot saved to output/improved_model/training_history.png
+Visualization saved to output/improved_model/prediction_sample_0.png
+Visualization saved to output/improved_model/prediction_sample_1.png
+Visualization saved to output/improved_model/prediction_sample_2.png
