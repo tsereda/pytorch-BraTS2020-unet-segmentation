@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=4  # Request all 24 cores
 #SBATCH --mem=8G           # Request all available memory (92 GiB)
 #SBATCH --time=2:00:00
-
+conda init
 # Activate your Python environment (if using a virtual environment)
 conda activate pytorch-BraTS2020-unet-segmentation
 

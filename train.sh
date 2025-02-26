@@ -15,6 +15,7 @@
 			
 # The default is one task per node
 #SBATCH --ntasks=1
+#SBATCH --ntasks-per-node=4
 #SBATCH --nodes=1
 #SBATCH --exclusive
 
@@ -25,7 +26,9 @@
 
 #request 10 minutes of runtime - the job will be killed if it exceeds this
 #SBATCH --time=20:00:00
-#SBATCH --nodelist=gpu001
+
+#SBATCH --output=logs/train_%j.out
+#SBATCH --error=logs/train_%j.err
 
 ### Commands to run your program start here ####################################
 echo "starting..."

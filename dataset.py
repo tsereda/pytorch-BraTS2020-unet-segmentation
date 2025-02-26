@@ -89,19 +89,35 @@ def get_data_loaders(
 ) -> Tuple[DataLoader, DataLoader]:
     """
     Create data loaders for training and validation
-    
-    Args:
-        data_dir (str): Directory containing train and val folders
-        batch_size (int): Batch size for training
-        num_workers (int): Number of workers for data loading
-        
-    Returns:
-        Tuple[DataLoader, DataLoader]: Training and validation data loaders
     """
+    print("-" * 30) # Separator for clarity in logs
+    print("DEBUGGING get_data_loaders:")
+    print(f"Input data_dir: {data_dir}")
+
+    train_dir = Path(data_dir) / 'train'
+    val_dir = Path(data_dir) / 'val'
+    print(f"Train directory: {train_dir}")
+    print(f"Val directory: {val_dir}")
+
+
+    img_dir_train = train_dir / 'images'
+    mask_dir_train = train_dir / 'masks'
+    img_dir_val = val_dir / 'images'
+    mask_dir_val = val_dir / 'masks'
+
+    print(f"Train images directory: {img_dir_train}")
+    print(f"Train masks directory: {mask_dir_train}")
+    print(f"Val images directory: {img_dir_val}")
+    print(f"Val masks directory: {mask_dir_val}")
+
+
     # Create datasets
-    train_dataset = BraTSDataset(data_dir, mode='train')
-    val_dataset = BraTSDataset(data_dir, mode='val')
-    
+    train_dataset = BraTSDataset(data_dir, mode='train') # Note: data_dir is base, mode='train'
+    val_dataset = BraTSDataset(data_dir, mode='val')   # Note: data_dir is base, mode='val'
+
+    print(f"Length of train_dataset: {len(train_dataset)}")
+    print(f"Length of val_dataset: {len(val_dataset)}")
+
     # Create data loaders
     train_loader = DataLoader(
         train_dataset,
@@ -111,7 +127,7 @@ def get_data_loaders(
         pin_memory=True,
         drop_last=True
     )
-    
+
     val_loader = DataLoader(
         val_dataset,
         batch_size=batch_size,
@@ -120,7 +136,11 @@ def get_data_loaders(
         pin_memory=True,
         drop_last=False
     )
-    
+
+    print(f"Length of train_loader: {len(train_loader)}") # Batches in loader
+    print(f"Length of val_loader: {len(val_loader)}")   # Batches in loader
+    print("-" * 30) # Separator
+
     return train_loader, val_loader
 
 

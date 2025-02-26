@@ -1,0 +1,69 @@
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/callbacks/model_checkpoint.py:654: Checkpoint directory /home/santosh_lab/shared/TimS/pytorch-BraTS2020-unet-segmentation/output/checkpoints exists and is not empty.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+
+  | Name       | Type      | Params | Mode 
+-------------------------------------------------
+0 | model      | UNet3D    | 5.6 M  | train
+1 | dice_loss  | DiceLoss  | 0      | train
+2 | focal_loss | FocalLoss | 0      | train
+-------------------------------------------------
+5.6 M     Trainable params
+0         Non-trainable params
+5.6 M     Total params
+22.583    Total estimated model params size (MB)
+87        Modules in train mode
+0         Modules in eval mode
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/utilities/data.py:106: Total length of `DataLoader` across ranks is zero. Please make sure this was your intention.
+/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/callbacks/model_checkpoint.py:384: `ModelCheckpoint(monitor='val_mean_iou')` could not find the monitored key in the returned metrics: ['train_dice_loss', 'train_dice_loss_step', 'train_focal_loss', 'train_focal_loss_step', 'train_total_loss', 'train_total_loss_step', 'train_dice_loss_epoch', 'train_focal_loss_epoch', 'train_total_loss_epoch', 'epoch', 'step']. HINT: Did you call `log('val_mean_iou', value)` in the `LightningModule`?
+Traceback (most recent call last):
+  File "/home/santosh_lab/shared/TimS/pytorch-BraTS2020-unet-segmentation/train.py", line 270, in <module>
+    model, trainer = train_model(
+                     ~~~~~~~~~~~^
+        data_path=DATA_PATH,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        learning_rate=1e-4
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/santosh_lab/shared/TimS/pytorch-BraTS2020-unet-segmentation/train.py", line 260, in train_model
+    trainer.fit(model, train_loader, val_loader)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 539, in fit
+    call._call_and_handle_interrupt(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/trainer/call.py", line 47, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 575, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 982, in _run
+    results = self._run_stage()
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/trainer/trainer.py", line 1026, in _run_stage
+    self.fit_loop.run()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/loops/fit_loop.py", line 217, in run
+    self.on_advance_end()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/loops/fit_loop.py", line 477, in on_advance_end
+    self.epoch_loop.update_lr_schedulers("epoch", update_plateau_schedulers=not self.restarting)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 424, in update_lr_schedulers
+    self._update_learning_rates(interval=interval, update_plateau_schedulers=update_plateau_schedulers)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usd.local/timothy.sereda/miniforge3/envs/pytorch-BraTS2020-unet-segmentation/lib/python3.13/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 459, in _update_learning_rates
+    raise MisconfigurationException(
+    ...<3 lines>...
+    )
+lightning_fabric.utilities.exceptions.MisconfigurationException: ReduceLROnPlateau conditioned on metric val_total_loss which is not available. Available metrics are: ['train_dice_loss', 'train_dice_loss_step', 'train_focal_loss', 'train_focal_loss_step', 'train_total_loss', 'train_total_loss_step', 'train_dice_loss_epoch', 'train_focal_loss_epoch', 'train_total_loss_epoch']. Condition can be set using `monitor` key in lr scheduler dict
+/var/spool/slurmd/job902134/slurm_script: line 46: 1131845 Segmentation fault      (core dumped) python train.py
