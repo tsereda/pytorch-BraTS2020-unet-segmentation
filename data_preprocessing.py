@@ -11,6 +11,7 @@ import splitfolders
 import multiprocessing
 from functools import partial
 import time
+import sys
 
 
 def process_single_case(case_data, output_path, min_label_ratio=0.01):
@@ -32,7 +33,9 @@ def process_single_case(case_data, output_path, min_label_ratio=0.01):
     case_id = filename.split('_t2.nii')[0]  # Remove the modality suffix
     
     try:
-        print(f"Processing case {case_id} (idx: {case_idx})...")
+        # For better output from multiple processes
+        sys.stdout.write(f"Starting to process {case_id}...\n")
+        sys.stdout.flush()
         
         # Load modalities and explicitly convert to the right types
         temp_image_flair = nib.load(flair_path).get_fdata()
@@ -61,7 +64,8 @@ def process_single_case(case_data, output_path, min_label_ratio=0.01):
         val, counts = np.unique(temp_mask, return_counts=True)
         
         if (1 - (counts[0]/counts.sum())) <= min_label_ratio:
-            print(f"Case {case_id} has insufficient non-zero labels, skipping...")
+            sys.stdout.write(f"Case {case_id} skipped: insufficient non-zero labels\n")
+            sys.stdout.flush()
             return None, case_id  # Not enough non-zero labels
         
         # Optimize normalization using vectorized operations
@@ -90,11 +94,13 @@ def process_single_case(case_data, output_path, min_label_ratio=0.01):
             temp_mask
         )
         
-        print(f"Case {case_id} processed successfully")
+        sys.stdout.write(f"Case {case_id} processed successfully\n")
+        sys.stdout.flush()
         return True, case_id
         
     except Exception as e:
-        print(f"Error processing {case_id}: {str(e)}")
+        sys.stdout.write(f"Error processing {case_id}: {str(e)}\n")
+        sys.stdout.flush()
         return False, case_id
 
 
@@ -267,9 +273,9 @@ def preprocess_brats2020(input_path: str, output_path: str, num_workers: int = N
         batch_size = min(50, len(remaining_case_data))
         batches = [remaining_case_data[i:i+batch_size] for i in range(0, len(remaining_case_data), batch_size)]
         
+        total_processed = len(processed_files['valid_cases']) + len(processed_files['skipped_cases'])
+        
         for batch_idx, batch in enumerate(batches):
-            print(f"Processing batch {batch_idx+1}/{len(batches)} ({len(batch)} cases)...")
-            
             # Use a context manager to ensure proper cleanup of resources
             with multiprocessing.Pool(processes=num_workers) as pool:
                 # Use a simple map instead of tqdm
@@ -284,9 +290,10 @@ def preprocess_brats2020(input_path: str, output_path: str, num_workers: int = N
                 else:
                     processed_files['skipped_cases'].append(case_id)
             
-            print(f"Batch {batch_idx+1} complete: {valid_in_batch}/{len(batch)} cases valid")
-            print(f"Progress: {len(processed_files['valid_cases'])}/{len(case_data)} cases processed")
-            print(f"Remaining: {len(case_data) - len(processed_files['valid_cases']) - len(processed_files['skipped_cases'])} cases")
+            total_processed = len(processed_files['valid_cases']) + len(processed_files['skipped_cases'])
+            progress_percent = (total_processed / len(case_data)) * 100
+            
+            print(f"Batch {batch_idx+1}/{len(batches)}: {valid_in_batch}/{len(batch)} valid cases - Overall: {total_processed}/{len(case_data)} ({progress_percent:.1f}%)")
     
     # Save processing results
     with open(output_path / 'processing_results.json', 'w') as f:
@@ -352,19 +359,17 @@ def print_dataset_info(path: str):
     # Get some sample filenames
     if nifti_files:
         print("Sample filenames:")
-        for f in nifti_files[:5]:
+        for f in nifti_files[:3]:
             print(f"  - {os.path.basename(f)}")
     
     # Check directory structure
     subdirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
-    print(f"Subdirectories: {subdirs[:10]}")  # Only show first 10
-    if len(subdirs) > 10:
-        print(f"... and {len(subdirs) - 10} more subdirectories")
+    print(f"Subdirectories: {len(subdirs)} folders")
     
     if subdirs:
         sample_subdir = os.path.join(path, subdirs[0])
         files = os.listdir(sample_subdir)
-        print(f"Sample subdir '{subdirs[0]}' contains: {files}")
+        print(f"Sample subdir '{subdirs[0]}' contents: {len(files)} files")
 
 
 def create_dataset_for_training(
@@ -412,7 +417,7 @@ if __name__ == "__main__":
         processed_path=PROCESSED_PATH,
         final_data_path=FINAL_DATA_PATH,
         train_ratio=0.75,
-        num_workers=None,  # This will use CPU count-1 workers
+        num_workers=12, 
         sequential=False  # Set to True for sequential processing
     )
     
