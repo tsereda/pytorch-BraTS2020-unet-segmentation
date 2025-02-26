@@ -270,7 +270,7 @@ def preprocess_brats2020(input_path: str, output_path: str, num_workers: int = N
         process_func = partial(process_single_case, output_path=output_path)
         
         # Process in smaller batches to avoid memory issues
-        batch_size = min(50, len(remaining_case_data))
+        batch_size = min(32, len(remaining_case_data))
         batches = [remaining_case_data[i:i+batch_size] for i in range(0, len(remaining_case_data), batch_size)]
         
         total_processed = len(processed_files['valid_cases']) + len(processed_files['skipped_cases'])
@@ -293,7 +293,7 @@ def preprocess_brats2020(input_path: str, output_path: str, num_workers: int = N
             total_processed = len(processed_files['valid_cases']) + len(processed_files['skipped_cases'])
             progress_percent = (total_processed / len(case_data)) * 100
             
-            print(f"Batch {batch_idx+1}/{len(batches)}: {valid_in_batch}/{len(batch)} valid cases - Overall: {total_processed}/{len(case_data)} ({progress_percent:.1f}%)")
+            print(f"Batch {batch_idx+1}/{len(batches)} ({valid_in_batch}/{len(batch)} valid cases) - Overall: {total_processed}/{len(case_data)} ({progress_percent:.1f}%) processed")
     
     # Save processing results
     with open(output_path / 'processing_results.json', 'w') as f:
@@ -417,7 +417,7 @@ if __name__ == "__main__":
         processed_path=PROCESSED_PATH,
         final_data_path=FINAL_DATA_PATH,
         train_ratio=0.75,
-        num_workers=12, 
+        num_workers=4, 
         sequential=False  # Set to True for sequential processing
     )
     
